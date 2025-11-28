@@ -56,13 +56,13 @@ const Sidebar: React.FC<Props> = ({ collapsed, setCollapsed }) => {
             width={50}
             height={50}
             className="logo-title"
-            src="/assets/images/logo.png"
+            src="/assets/images/demologo.png"
             alt=""
             // style={{ backgroundColor: "#fff", height: "40px", width: 200 }}
           />
-          <span style={{ color: "#fff", fontWeight: 400, fontSize: "32px" }}>
+          {/* <span style={{ color: "#fff", fontWeight: 400, fontSize: "32px" }}>
             STL ELD
-          </span>
+          </span> */}
         </div>
         {/* <img
           width={50}
