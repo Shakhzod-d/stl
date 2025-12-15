@@ -77,17 +77,17 @@ const Login: React.FC = () => {
         onSubmit={handleSubmit(submitFunc)}
         id="TMK-login-forum"
       >
-        <img
+        {/* <img
           style={{ marginBottom: "20px" }}
           className="logo-icon"
-          src="https://tmk.roundedteam.uz/assets/icons/logo-icon.svg"
+          src={`/assets/icons/logo-icon.svg`}
           alt=""
         />
         <img
           className="logo-title"
           src="https://tmk.roundedteam.uz/assets/icons/logo-title.svg"
           alt=""
-        />
+        /> */}
         {/* <img
           style={{ width: 200 }}
           className="logo-title"
