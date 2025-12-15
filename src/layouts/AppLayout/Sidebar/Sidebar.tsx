@@ -21,6 +21,7 @@ const Sidebar: React.FC<Props> = ({ collapsed, setCollapsed }) => {
   useEffect(() => {
     const path = pathname.split("/").filter((item) => item);
     if (path) {
+      // @ts-ignore
       setSelectedKeys([path[1]] || []);
     }
   }, [pathname]);
