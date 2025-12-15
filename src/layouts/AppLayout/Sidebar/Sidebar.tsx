@@ -21,6 +21,7 @@ const Sidebar: React.FC<Props> = ({ collapsed, setCollapsed }) => {
   useEffect(() => {
     const path = pathname.split("/").filter((item) => item);
     if (path) {
+      // @ts-ignore
       setSelectedKeys([path[1]] || []);
     }
   }, [pathname]);
@@ -53,16 +54,16 @@ const Sidebar: React.FC<Props> = ({ collapsed, setCollapsed }) => {
         {/* <img className="logo-title" src="/assets/images/STL.png" alt="" /> */}
         <div style={{ display: "flex", alignItems: "center" }}>
           <img
-            width={50}
-            height={50}
+            width={150}
+            height={150}
             className="logo-title"
-            src="/assets/images/logo.png"
+            src="/assets/images/fullLogo.svg"
             alt=""
             // style={{ backgroundColor: "#fff", height: "40px", width: 200 }}
           />
-          <span style={{ color: "#fff", fontWeight: 400, fontSize: "32px" }}>
+          {/* <span style={{ color: "#fff", fontWeight: 400, fontSize: "32px" }}>
             STL ELD
-          </span>
+          </span> */}
         </div>
         {/* <img
           width={50}

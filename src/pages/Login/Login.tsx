@@ -1,5 +1,5 @@
 import React from "react";
-import { Button} from "antd";
+import { Button } from "antd";
 import TextField from "@/components/form/TextField";
 import PasswordField from "@/components/form/PasswordField";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -34,36 +34,35 @@ const Login: React.FC = () => {
         const role: IUserRole = data.role;
 
         const isAdmin = role.roleName === "superAdmin";
-        const isService = ["serviceAdmin", "secondServiceAdmin"].includes(role.roleName);
+        const isService = ["serviceAdmin", "secondServiceAdmin"].includes(
+          role.roleName
+        );
         const isCompany = ["companyAdmin"].includes(role.roleName);
-        const isLogger = ["logger"].includes(role.roleName)
-        
+        const isLogger = ["logger"].includes(role.roleName);
 
         setIsAuth(true);
         setUserData(data);
         setLocalStorage("token", data?.token);
         if (isAdmin) setTimeout(() => historyReplace("/admin/services"), 0);
         // if (isCompany){ setTimeout(() => historyReplace("/main/dashboard"), 0)}
-        if (isCompany){ 
-          setLocalStorage("companyId", data.companyId)
-          historyReplace("/main/dashboard")
+        if (isCompany) {
+          setLocalStorage("companyId", data.companyId);
+          historyReplace("/main/dashboard");
           window.location.reload();
         }
         // if (isLogger) setTimeout(() => historyReplace('/admin/all-companies'), 0)
-        if(isLogger){
-          setLocalStorage('companyId', data.companyId)
-          historyReplace('/main/log/logs')
+        if (isLogger) {
+          setLocalStorage("companyId", data.companyId);
+          historyReplace("/main/log/logs");
           window.location.reload();
-          
         }
         // if (isService) setTimeout(() => historyReplace('/admin/all-companies'), 0)
-        if(isService){
-          setLocalStorage('serviceId', data.serviceId)
-          historyReplace('/admin/all-companies')
+        if (isService) {
+          setLocalStorage("serviceId", data.serviceId);
+          historyReplace("/admin/all-companies");
           window.location.reload();
-          
         }
-        console.log('user', data);
+        console.log("user", data);
       },
       onError: (err) => {
         errorMessage(err?.data.error);
@@ -79,7 +78,7 @@ const Login: React.FC = () => {
         id="TMK-login-forum"
       >
         <img
-          style={{marginBottom: '20px'}}
+          style={{ marginBottom: "20px" }}
           className="logo-icon"
           src="https://tmk.roundedteam.uz/assets/icons/logo-icon.svg"
           alt=""
@@ -87,6 +86,18 @@ const Login: React.FC = () => {
         <img
           className="logo-title"
           src="https://tmk.roundedteam.uz/assets/icons/logo-title.svg"
+          alt=""
+        />
+        {/* <img
+          style={{ width: 200 }}
+          className="logo-title"
+          src="/assets/icons/Logo_STL1_vector.svg"
+          alt=""
+        /> */}
+        <img
+          style={{ width: 200 }}
+          className="logo-title"
+          src="/assets/images/fullLogo.svg"
           alt=""
         />
         <TextField
