@@ -97,7 +97,7 @@ const Login: React.FC = () => {
         <img
           style={{ width: 200 }}
           className="logo-title"
-          src="/assets/images/demoLogo.png"
+          src="/assets/images/fullLogo.svg"
           alt=""
         />
         <TextField
