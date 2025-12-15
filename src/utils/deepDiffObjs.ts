@@ -37,6 +37,7 @@ const deepDiffObjs = (): any => {
     VALUE_UNCHANGED: "unchanged",
     map: function (obj1: any, obj2: any) {
       if (this.isFunction(obj1) || this.isFunction(obj2)) {
+        // eslint-disable-next-line no-throw-literal
         throw new Error("Invalid argument. Function given, object expected.");
       }
       if (this.isValue(obj1) || this.isValue(obj2)) {
