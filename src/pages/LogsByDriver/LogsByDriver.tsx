@@ -39,7 +39,7 @@ const LogsByDriver: React.FC = () => {
     },
     {
       enabled: !!driver && !!rangeDate,
-    }
+    },
   );
 
   return (
@@ -95,7 +95,7 @@ const LogsByDriver: React.FC = () => {
               return {
                 onClick: () =>
                   historyPush(
-                    `/main/log/logs/inner/${driverId}?time=${date * 1000}`
+                    `/main/log/logs/inner/${driverId}?time=${date * 1000}`,
                   ),
               };
             }}

@@ -18,8 +18,8 @@ const useDriversData = ({
 
   // Get all drivers data
   const { data, isLoading, isFetching } = useApi<IPageData<IDriverData[]>>(
-    "/drivers",
-    { search, location, page, time: (time || 0) / 1000, limit: PAGE_LIMIT }
+    "/admin/drivers",
+    { search, location, page, time: (time || 0) / 1000, limit: PAGE_LIMIT },
   );
 
   // parse api data

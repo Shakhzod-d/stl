@@ -1,9 +1,9 @@
 import { Col, DatePicker, Row, message } from "antd";
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import FormModal from "@/components/elements/FormModal";
 import Select from "@/components/form/Select";
-import {  IIftaCreateForm } from "./ifta-reports.types";
+import { IIftaCreateForm } from "./ifta-reports.types";
 import { state_names } from "@/constants";
 import useApi from "@/hooks/useApi";
 import { IVehicleData } from "@/types/vehicle.type";
@@ -13,8 +13,6 @@ import { filterReport } from "@/store/slices/reportSlice";
 import { AppDispatch, RootState } from "@/store";
 import useParseData from "@/hooks/useParseData";
 
-
-
 interface Props {
   toggle: () => void;
   setFromTo1: (item: any) => void;
@@ -22,13 +20,21 @@ interface Props {
   setStateVehicle: (item: any) => void;
 }
 
-const ActionModal: React.FC<Props> = ({ toggle, setFromTo1, setGeneratedDate, setStateVehicle }) => {
+const ActionModal: React.FC<Props> = ({
+  toggle,
+  setFromTo1,
+  setGeneratedDate,
+  setStateVehicle,
+}) => {
   const { handleSubmit, control, reset, setValue, formState, watch } =
     useForm<IIftaCreateForm>();
-    const s= useSelector<RootState>((s) => s.reports.IFTAReports);
+  const s = useSelector<RootState>((s) => s.reports.IFTAReports);
   const [fromTo, setFromTo] = useState<[any, any]>([0, 0]);
   const dispatch = useDispatch<AppDispatch>();
-  const [stateNames, setStateNames] = useState([{label: 'All State', value: 'all'}, ...state_names])
+  const [stateNames, setStateNames] = useState([
+    { label: "All State", value: "all" },
+    ...state_names,
+  ]);
 
   const { data, status } = useApi<{
     data: { total: number; data: IVehicleData[] };
@@ -36,34 +42,34 @@ const ActionModal: React.FC<Props> = ({ toggle, setFromTo1, setGeneratedDate, se
     page: 1,
     limit: 100,
   });
-  
-  const { tableData, totalPage } = useParseData<IVehicleData>(data)
-  
-  
-  
-  const state11 = watch('state')
-  const vehicle11 = watch('vehicleId')
-  const [vehicleNames, setVehicleNames] = useState<any[]>([{unit: 'All State', _id: 'all'}, ...tableData])
-  
-  
- useEffect(()=>{
-  if(vehicle11?.includes('all')){
-    setVehicleNames([{unit: 'All Vehicles', _id: 'all'}])
-  }else{
-    setVehicleNames([{unit: 'All Vehicles', _id: 'all'}, ...tableData])
-  }
- }, [vehicle11, tableData])
 
- useEffect(()=>{
-  if(state11?.includes('all')){
-    setStateNames([{label: 'All States', value: 'all'}])
-  }else{
-    setStateNames([{label: 'All States', value: 'all'}, ...state_names])
-  }
- }, [state11])
+  const { tableData, totalPage } = useParseData<IVehicleData>(data);
+
+  const state11 = watch("state");
+  const vehicle11 = watch("vehicleId");
+  const [vehicleNames, setVehicleNames] = useState<any[]>([
+    { unit: "All State", _id: "all" },
+    ...tableData,
+  ]);
+
+  useEffect(() => {
+    if (vehicle11?.includes("all")) {
+      setVehicleNames([{ unit: "All Vehicles", _id: "all" }]);
+    } else {
+      setVehicleNames([{ unit: "All Vehicles", _id: "all" }, ...tableData]);
+    }
+  }, [vehicle11, tableData]);
+
+  useEffect(() => {
+    if (state11?.includes("all")) {
+      setStateNames([{ label: "All States", value: "all" }]);
+    } else {
+      setStateNames([{ label: "All States", value: "all" }, ...state_names]);
+    }
+  }, [state11]);
 
   const submitFunc = (formData: IIftaCreateForm) => {
-    const date = new Date()
+    const date = new Date();
     const isValidDateRange =
       moment.isMoment(fromTo[0]) && moment.isMoment(fromTo[1]);
 
@@ -72,22 +78,28 @@ const ActionModal: React.FC<Props> = ({ toggle, setFromTo1, setGeneratedDate, se
       const allObj = {
         url,
         body: {
-          vehicleId: vehicle11.includes('all') ? ['all'] : formData.vehicleId === undefined ? [] : formData.vehicleId,
-          state: state11.includes('all') ? ['all'] : formData.state === undefined ? [] : formData.state,
+          vehicleId: vehicle11.includes("all")
+            ? ["all"]
+            : formData.vehicleId === undefined
+            ? []
+            : formData.vehicleId,
+          state: state11.includes("all")
+            ? ["all"]
+            : formData.state === undefined
+            ? []
+            : formData.state,
         },
         toggle,
       };
-      
-      setStateVehicle(allObj?.body)
+
+      setStateVehicle(allObj?.body);
       dispatch(filterReport(allObj));
-      setGeneratedDate(date)
-      
+      setGeneratedDate(date);
     } else {
       message.error("Please select a valid date range.");
     }
-    
-      
-    setFromTo1(fromTo)
+
+    setFromTo1(fromTo);
   };
 
   return (
