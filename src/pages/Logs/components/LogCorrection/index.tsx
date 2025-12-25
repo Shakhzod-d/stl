@@ -63,13 +63,13 @@ const LogCorrection: React.FC<ILogCorrection> = ({ handleCloseEditing }) => {
   const { control, reset, handleSubmit } = useForm<TFormConnection>();
   const [fromTo, setFromTo] = useState<[any, any]>([0, 0]);
   const momentZone = useMomentZone();
- const distpatch = useDispatch<AppDispatch>()
+  const distpatch = useDispatch<AppDispatch>();
   // const { mutate: createMutate, isLoading: createLoading } =
   // useApiMutation("/interlog?_id=");
   //   const { mutate: updateMutate, isLoading: updateLoading } = useApiMutationID(
   // "PUT",
   // "/interlog?_id="
-// );
+  // );
   // const { data: vehicles, isLoading: vehicleLoad } = useApi<{
   //      data: IVehicle[];
   //      total: number;
@@ -78,7 +78,6 @@ const LogCorrection: React.FC<ILogCorrection> = ({ handleCloseEditing }) => {
   const formNames: TFormConnection = logCorrectionFormNames;
 
   useEffect(() => {
-
     reset({
       document: currentLog?.document || "",
       // [formNames.fromTo]: [
@@ -105,11 +104,9 @@ const LogCorrection: React.FC<ILogCorrection> = ({ handleCloseEditing }) => {
       momentZone(moment.unix(currentLog?.end || 0)),
     ]);
   }, [currentLog]);
-  // console.log(`currentLog?.location?.lng `, currentLog?.location);
 
   const submit = (formData: TFormConnection) => {
     handleCloseEditing();
-    //  console.log(moment(formData.fromTo[1]).format("HH:mm:ss"));
     setLogs((prevLogs: any) => {
       return prevLogs.map((prevLog: any) =>
         prevLog._id === currentLog?._id
@@ -124,7 +121,7 @@ const LogCorrection: React.FC<ILogCorrection> = ({ handleCloseEditing }) => {
               odometer: +formData.odometer,
               engineHours: +formData.hours,
             }
-          : prevLog
+          : prevLog,
       );
       /* return fixLogsStatus(
                      correctLogsTime(
@@ -137,26 +134,26 @@ const LogCorrection: React.FC<ILogCorrection> = ({ handleCloseEditing }) => {
                      )
                 ); */
     });
-    
-    //  console.log(moment(formData.fromTo[0]).format("HH:mm:ss")); // that is how time is to be got
+
     const newItem = {
       ...currentLog!,
       ...formData,
       location: {
-      name: currentLog?.location.name!,
-      lat: +formData.lng.split(",")[0],
-      lng: +formData.lng.split(",")[1],
-    },
-    // start: fromTo[0].unix(),
-    // end: fromTo[1].unix(),
-    odometer: +formData.odometer,
-    engineHours: +formData.hours,}
-    
+        name: currentLog?.location.name!,
+        lat: +formData.lng.split(",")[0],
+        lng: +formData.lng.split(",")[1],
+      },
+      // start: fromTo[0].unix(),
+      // end: fromTo[1].unix(),
+      odometer: +formData.odometer,
+      engineHours: +formData.hours,
+    };
+
     //@ts-ignore
-    if(currentLog?.status !== "certify"){
-      distpatch(putOtherStatus(newItem))
-    }else{
-      distpatch(putLogForm(newItem))
+    if (currentLog?.status !== "certify") {
+      distpatch(putOtherStatus(newItem));
+    } else {
+      distpatch(putLogForm(newItem));
     }
   };
 
@@ -223,17 +220,17 @@ const LogCorrection: React.FC<ILogCorrection> = ({ handleCloseEditing }) => {
             <div className="h-28">
               {
                 <TimePicker
-                className="w-100 h-20"
-                style={{ height: "28px" }}
-                label={formNames.fromTo}
-                value={fromTo}
-                // placeholder={formNames.from}
-                name={formNames.fromTo}
-                // control={control}
-                range={true}
-                onChange={(val) => setFromTo(val)}
-                required
-              />
+                  className="w-100 h-20"
+                  style={{ height: "28px" }}
+                  label={formNames.fromTo}
+                  value={fromTo}
+                  // placeholder={formNames.from}
+                  name={formNames.fromTo}
+                  // control={control}
+                  range={true}
+                  onChange={(val) => setFromTo(val)}
+                  required
+                />
               }
             </div>
             {/* <Row gutter={[40, 15]} style={{ border: "1px solid green" }}>

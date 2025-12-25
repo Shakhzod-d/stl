@@ -14,6 +14,7 @@ api.interceptors.request.use(
     config.headers["Authorization"] = `Bearer ${token}`; // ! here is to disable authorization
     config.headers["companyId"] = companyId;
     config.headers["Content-Type"] = "application/json";
+    config.headers["ngrok-skip-browser-warning"] = true;
     return config;
   },
   (error) => {

@@ -19,7 +19,6 @@ const MultiDayGraph = ({}: IMultiDayGraph) => {
     state: { driverData },
     actions: { setTime },
   } = useLogsInnerContext();
-  // console.log();
   const { width: graphWidth, height: graphHeight, ref } = useResizeDetector();
   const { data, isSuccess } = useApi<IMultidayLogs[]>(
     "/logs/range",
@@ -28,7 +27,7 @@ const MultiDayGraph = ({}: IMultiDayGraph) => {
       to: momentZone().startOf("day").unix(),
       driverId: driverData?.data._id,
     },
-    { suspense: true, enabled: !!driverData?.data._id }
+    { suspense: true, enabled: !!driverData?.data._id },
   );
   const { scrollRef, scrollToBottom } = useScrollToBottom();
   useEffect(() => {
@@ -86,7 +85,7 @@ const MultiDayGraph = ({}: IMultiDayGraph) => {
                                 setTime(
                                   momentZone(item?.start * 1000)
                                     .startOf("day")
-                                    .valueOf()
+                                    .valueOf(),
                                 )
                               }
                               // setHoveredId={setHoveredId}

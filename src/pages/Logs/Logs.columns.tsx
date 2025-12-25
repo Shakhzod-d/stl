@@ -67,7 +67,6 @@ const useMainColumns = () => {
       title: "Cycle",
       dataIndex: "cycle",
       render: (cycle: ICycle) => {
-        //    console.log(`cycle`, cycle);
         return Cycle(cycle?.cycle > 0 ? cycle?.cycle : 0);
       },
     },

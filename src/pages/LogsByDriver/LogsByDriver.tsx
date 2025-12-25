@@ -5,7 +5,6 @@ import useMomentZone from "@/hooks/useMomentZone";
 import { useQueryParams } from "@/hooks/useQueryParams";
 import MainLayout from "@/layouts/MainLayout";
 import { IPageData } from "@/types";
-import { IDriverData } from "@/types/driver.type";
 import { historyPush } from "@/utils";
 import { Table } from "antd";
 import React, { useState } from "react";
@@ -14,10 +13,13 @@ import { ILogsByDriver, useColumnsLogsByDriver } from "./LogsByDriver.columns";
 const LogsByDriver: React.FC = () => {
   const momentZone = useMomentZone();
 
-  const { data: driversData } = useApi<IPageData<ILogsByDriver[]>>("/drivers", {
-    page: 1,
-    limit: 100,
-  });
+  const { data: driversData } = useApi<IPageData<ILogsByDriver[]>>(
+    "/admin/drivers",
+    {
+      page: 1,
+      limit: 100,
+    },
+  );
 
   const [driver, setDriver] = useQueryParams("driver_id", null);
   const [violations, setViolations] = useQueryParams("violations", null);

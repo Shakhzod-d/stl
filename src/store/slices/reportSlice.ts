@@ -32,7 +32,7 @@ export const filterReport = createAsyncThunk(
       console.error("Error creating post:", error);
       throw error;
     }
-  }
+  },
 );
 
 export const getReportsInitially = createAsyncThunk(
@@ -42,30 +42,27 @@ export const getReportsInitially = createAsyncThunk(
 
     try {
       const response = await api.post(url, body);
-      console.log(`response`, response.data);
 
       return response.data;
     } catch (error) {
       console.error("Error IFTA report:", error);
       throw error;
     }
-  }
+  },
 );
 
 export const getFmcsaReports = createAsyncThunk(
   "report/getFmcsaReports",
   async (url: string) => {
-
     try {
       const response = await api.get(url);
-      // console.log(`response`, response.data);
 
       return response.data;
     } catch (error) {
       console.error("Error FMCSA report:", error);
       throw error;
     }
-  }
+  },
 );
 
 const ReportSlice = createSlice({
@@ -82,7 +79,7 @@ const ReportSlice = createSlice({
     });
     builder.addCase(filterReport.fulfilled, (state, action) => {
       state.loading = false;
-      state.IFTAReports = action.payload
+      state.IFTAReports = action.payload;
     });
 
     builder.addCase(getReportsInitially.pending, (state) => {
@@ -104,8 +101,6 @@ const ReportSlice = createSlice({
       state.loading = false;
       state.MFCSAReports = action.payload;
     });
-
-    
   },
 });
 

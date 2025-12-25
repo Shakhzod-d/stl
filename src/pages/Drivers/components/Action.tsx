@@ -22,28 +22,28 @@ import { state_names } from "@/constants";
 
 const Action = () => {
   const { id } = useParams<{ id: string }>();
-  
+
   // Get data
   const { data: drivers, isLoading: driverLoad } = useApi<{
     data: IDriverData[];
-  }>("/drivers", select_paging, { suspense: true });
+  }>("/admin/drivers", select_paging, { suspense: true });
   const { data: vehicles, isLoading: vehicleLoad } = useApi<{
     data: IVehicleData[];
     total: number;
   }>("/vehicles", select_paging, { suspense: true });
 
   const { data } = useApi<IDriverData>(
-    `/driver/${id}`,
+    `/admin/driver/${id}`,
     {},
-    { enabled: Boolean(id), suspense: true }
+    { enabled: Boolean(id), suspense: true },
   );
 
   // Action mutation
   const { mutate: createMutation, isLoading: createLoading } =
-    useApiMutation("/driver");
+    useApiMutation("/admin/driver");
   const { mutate: updateMutation, isLoading: updateLoading } = useApiMutationID(
     "PUT",
-    "/driver"
+    "/admin/driver",
   );
 
   const { handleSubmit, control, reset } = useForm<IDriverForm>(formProps);
@@ -51,7 +51,7 @@ const Action = () => {
   useEffect(() => {
     if (data) {
       const driver = data.data;
-      
+
       reset({
         firstName: driver.firstName,
         lastName: driver.lastName,
@@ -212,7 +212,7 @@ const Action = () => {
               name="coDriverId"
               control={control}
               data={mapDrivers(drivers?.data?.data || []).filter(
-                (item) => item._id !== id
+                (item) => item._id !== id,
               )}
               labelProp="fullName"
               valueProp="_id"

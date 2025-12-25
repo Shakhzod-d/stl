@@ -23,9 +23,9 @@ interface Props {
   editingUserId: string | undefined;
   onSuccess: () => void;
 }
-interface IRole{
-  role: string,
-  _id: string
+interface IRole {
+  role: string;
+  _id: string;
 }
 
 interface IRoles {
@@ -40,47 +40,45 @@ const ActionModal: React.FC<Props> = ({
   editingUserId: id,
   onSuccess,
 }) => {
-  const { handleSubmit, control, reset, getValues, watch } = useForm<IUserForm>();
-  const [ roleId, setRoldId] = useState<string>('')
-  const [roleList, setRolList] = useState<IRole[] | undefined>()
+  const { handleSubmit, control, reset, getValues, watch } =
+    useForm<IUserForm>();
+  const [roleId, setRoldId] = useState<string>("");
+  const [roleList, setRolList] = useState<IRole[] | undefined>();
   const { userData } = useSelector((state: RootState) => state.auth);
-  const [roles1, setRoles1] = useState<IRoles[] | undefined>()
-  // get one company to update
+  const [roles1, setRoles1] = useState<IRoles[] | undefined>();
   const { data, isLoading } = useApi(
     `/user/${id}`,
     {},
-    { enabled: Boolean(id) }
+    { enabled: Boolean(id) },
   );
-  
+
   const role = watch("role.roleName");
-  useEffect(()=>{
-    const res = api('role/getAll')
-    res.then((res) => 
-      setRolList(res.data.filter((item: any)=>{
-        if(item?.role === role){
-          return item
-        }
-      }))
-    ).catch((error)=>console.log(error)
-    )
-    
-  }, [role])
-  
+  useEffect(() => {
+    const res = api("role/getAll");
+    res
+      .then((res) =>
+        setRolList(
+          res.data.filter((item: any) => {
+            if (item?.role === role) {
+              return item;
+            }
+          }),
+        ),
+      )
+      .catch((error) => console.error(error));
+  }, [role]);
 
-  useEffect(()=>{
-    roleList?.filter((item: any)=>{
-      setRoldId(item._id)
-    })
-  }, [roleList])
-
-  // console.log(roleId);
-  
+  useEffect(() => {
+    roleList?.filter((item: any) => {
+      setRoldId(item._id);
+    });
+  }, [roleList]);
 
   const { mutate: createMutate, isLoading: createLoading } =
     useApiMutation("/user");
   const { mutate: updateMutate, isLoading: updateLoading } = useApiMutationID(
     "PUT",
-    "/user"
+    "/user",
   );
 
   useEffect(() => {
@@ -94,36 +92,28 @@ const ActionModal: React.FC<Props> = ({
         password: item.password,
         role: {
           roleName: item.role.roleName,
-          roleId: roleId
+          roleId: roleId,
         },
       });
-      
   }, [data]);
-  
 
   const roles = useMemo(() => {
     return role_names.filter((el) => el.forCompany);
   }, [role_names]);
-  useEffect(()=>{
-    if(userData?.role.roleName === RoleNames.COMPANY_ADMIN){
-      setRoles1(roles.filter((item: IRoles)=>item.value === 'logger'))
+  useEffect(() => {
+    if (userData?.role.roleName === RoleNames.COMPANY_ADMIN) {
+      setRoles1(roles.filter((item: IRoles) => item.value === "logger"));
+    } else {
+      setRoles1(roles);
     }
-    else{
-      setRoles1(roles)
-    }
-    
-  }, [])
-  
+  }, []);
 
   const submitFunc = (data: IUserForm) => {
-    
     data.companyId = getLocalStorage("companyId");
-    data = {...data, role: {...data.role, roleId: roleId}}
+    data = { ...data, role: { ...data.role, roleId: roleId } };
     if (id) updateMutate({ id, data }, { onSuccess });
-    else createMutate({...data, serviceId: userData?.serviceId}, { onSuccess });
-    console.log('rolid', roleId);
-    
-    
+    else
+      createMutate({ ...data, serviceId: userData?.serviceId }, { onSuccess });
   };
 
   return (

@@ -33,7 +33,7 @@ const LogTable: React.FC<ILogTable> = ({
 
   const { data: drivers, isLoading: driverLoad } = useApi<{
     data: IDriverData[];
-  }>("/drivers", select_paging, { suspense: true });
+  }>("/admin/drivers", select_paging, { suspense: true });
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>();
   const [switchingDriverId, setSwitchingDriverId] = useState();
   const onSelectChange = (newSelectedRowKeys: any[]) => {
@@ -57,7 +57,6 @@ const LogTable: React.FC<ILogTable> = ({
           onChange: onSelectChange,
         }}
         onRow={(record: ILog, rowIndex) => {
-          //  console.log("on click on row");
           return {
             onMouseEnter: () => setHoveredId(record._id || null), // mouse enter row
             onMouseLeave: () => setHoveredId(null), // mouse leave row
@@ -80,7 +79,7 @@ const LogTable: React.FC<ILogTable> = ({
               // name="coDriverId"
               // control={control}
               data={mapDrivers(
-                drivers?.data?.data?.filter((d) => d._id !== driver?._id) || []
+                drivers?.data?.data?.filter((d) => d._id !== driver?._id) || [],
               )}
               setValue={setSwitchingDriverId}
               value={switchingDriverId}

@@ -16,16 +16,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { RoleNames } from "@/App";
 
-
 export const ClipLocation = (position: { lat: number; lng: number }) => {
-  // console.log(`position`, position);
   return (
     <div
       className="clip-board"
       onClick={() =>
         navigator.clipboard
           .writeText(
-            `https://www.google.com/maps/search/?api=1&query=${position.lat},${position.lng}`
+            `https://www.google.com/maps/search/?api=1&query=${position.lat},${position.lng}`,
           )
           .then(() => successMessage("Location copied to clipboard"))
       }
@@ -88,31 +86,26 @@ export const TableAction: React.FC<{
       ) : (
         <div
           onClick={() => {
-            if((userData?.role.roleName !== RoleNames.LOGGER)){
+            if (userData?.role.roleName !== RoleNames.LOGGER) {
               if (typeof updateFunction === "function") {
-              
                 updateFunction?.();
-              
-              
+              }
+              if (replace) {
+                historyReplace(updatePush);
+              } else {
+                historyPush(updatePush);
+              }
             }
-            if (replace) {
-              historyReplace(updatePush);
-            } else {
-              historyPush(updatePush);
-            }
-            }
-            
-            
           }}
         >
           <Icon icon="pencil" className="pencil" />
         </div>
-      )}{
-        userData?.role.roleName === RoleNames.LOGGER ? 
-        <DeleteConfirm  title={confirmTitle} /> :
+      )}
+      {userData?.role.roleName === RoleNames.LOGGER ? (
+        <DeleteConfirm title={confirmTitle} />
+      ) : (
         <DeleteConfirm onConfirm={onDeleteConfirm} title={confirmTitle} />
-      }
-      
+      )}
     </div>
   );
 };
@@ -144,6 +137,7 @@ export const DriverCondition = () => {
           <div
             className="driver-condition-progress"
             style={{
+              //  @ts-ignore
               width: `${100 * (statusTimeLeft / LIMIT) ?? 0}%`,
             }}
           />

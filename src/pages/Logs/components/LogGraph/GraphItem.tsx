@@ -72,7 +72,7 @@ const GraphItem: React.FC<IGraphItem> = ({
   const [rangeVal, setRangeVal] = useState<any>(initialItem.rangeVal || []);
   const state = useSelector((state: any) => state?.auth);
   const companyTimeZone: any = useSelector<RootState>(
-    (state) => state?.log.companyTimeZone
+    (state) => state?.log.companyTimeZone,
   );
 
   const item = initialItem;
@@ -105,7 +105,7 @@ const GraphItem: React.FC<IGraphItem> = ({
   const getStatusDuration = (start: any, end: any) => {
     const { days, hours, minutes, seconds } = getDurationDate(
       parseUnix(start),
-      parseUnix(end)
+      parseUnix(end),
     );
     return (
       <span className="duration">
@@ -158,7 +158,7 @@ const GraphItem: React.FC<IGraphItem> = ({
     dateFromTimestamp.getFullYear() === currentDate.getFullYear();
 
   const [formattedDateTime, setFormattedDateTime] = useState<string | null>(
-    null
+    null,
   );
 
   // ******************************************* hook
@@ -201,22 +201,12 @@ const GraphItem: React.FC<IGraphItem> = ({
     const etDateTime = moment(
       moment // @ts-ignore
         .unix(date) // @ts-ignore
-        .tz(timeZones[companyTimeZone])
+        .tz(timeZones[companyTimeZone]),
     ).format("h:mm:ss A");
 
     // Set the formatted date and time to state
     setFormattedDateTime(etDateTime);
   }, [initialTime]);
-
-  // console.log(
-  //   `formattedStartTime`,
-  //   formattedRightTime,
-  //   moment(parseUnix(initialTime + rangeVal[1])).format("HH:mm:ss")
-  //   // moment(parseUnix(initialTime + rangeVal[1])).format("HH:mm:ss")
-  // );
-
-  // console.log("graphWidth", `ts`, ts - 44, rangeVal[1] - 100); //rangeVal[1] > ts
-  // console.log("item", item); //rangeVal[1] > ts
 
   return (
     <div>
@@ -246,9 +236,7 @@ const GraphItem: React.FC<IGraphItem> = ({
             left: itemPosition,
           }}
           className={`box-wrapper ${status} ${
-            item._id === hoveredId
-              ? "hovered"
-              : ""
+            item._id === hoveredId ? "hovered" : ""
           }`}
           onClick={() => setCurrentLog?.(item)}
           onMouseEnter={() => !currentLog && setHoveredId?.(item._id)}
@@ -356,7 +344,6 @@ const GraphItem: React.FC<IGraphItem> = ({
               return;
             }
 
-            // console.log(`value`, value);
             // if (isToday === true && rangeWidth > temp) {
             //   // Only allow changes if the slider is not disabled
             //   return;
@@ -368,8 +355,6 @@ const GraphItem: React.FC<IGraphItem> = ({
             // }
 
             // ***********************************
-
-            // console.log(`isToday`, isToday);
 
             // const isWithinRange = value[0] >= 0 && value[1] <= ONE_DAY_SECONDS;
 

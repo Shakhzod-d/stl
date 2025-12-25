@@ -44,7 +44,7 @@ const TransferLogs: React.FC<{
   //      setDuration(0);
   // }, []);
   const [duration, setDuration] = useState<number>(
-    currentLog ? currentLog?.end - currentLog?.start + initialTime : 0
+    currentLog ? currentLog?.end - currentLog?.start + initialTime : 0,
   );
 
   const handleDurationChange = (val: Moment) => {
@@ -54,11 +54,9 @@ const TransferLogs: React.FC<{
     // setDuration(durationInSeconds);
     setDuration(val.unix());
     setIds((prev) => ({ ...prev, time: durationInSeconds }));
-    // console.log(`durationInSeconds`, durationInSeconds);
   };
 
   const handleTranferLog = () => {
-    // console.log("this is log transfer");
     const tempObj = {
       ...ids,
       onCancel,
@@ -69,7 +67,7 @@ const TransferLogs: React.FC<{
   useEffect(() => {
     // if (transferStatus === "success") {
     setDuration(
-      currentLog ? currentLog?.end - currentLog?.start + initialTime : 0
+      currentLog ? currentLog?.end - currentLog?.start + initialTime : 0,
     );
     // }
   }, [currentLog]);

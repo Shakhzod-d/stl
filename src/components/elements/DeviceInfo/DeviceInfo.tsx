@@ -8,7 +8,6 @@ const DeviceInfo: React.FC<IDeviceInfo> = (props) => {
   const [isOpen, setOpen] = useState(false);
   const handleModal = () => setOpen((p) => !p);
 
-  // console.log(props);
   return (
     <div>
       <span className="device-info" onClick={handleModal}>

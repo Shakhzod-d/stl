@@ -33,16 +33,14 @@ export const updateLogsTransfer = createAsyncThunk(
       time: number;
       onCancel: () => void;
     },
-    thunkAPI
+    thunkAPI,
   ) => {
-    // console.log(`data`, data);
     const { onCancel, ...restObj } = data;
     try {
       // Make the PUT request using axios
       const response = await api.put(apiUrl, restObj);
 
       // Return the data from the response
-      // console.log(`response`, response);
       // @ts-ignore
       if (response.message === "OK") {
         // close modal
@@ -54,7 +52,7 @@ export const updateLogsTransfer = createAsyncThunk(
       // @ts-ignore
       return thunkAPI.rejectWithValue({ error: error.message });
     }
-  }
+  },
 );
 
 export const postInsertInfoLog = createAsyncThunk(
@@ -67,9 +65,8 @@ export const postInsertInfoLog = createAsyncThunk(
 
       // @ts-ignore
       if (response.message === "OK") {
-        handleLogItems(response.data)
+        handleLogItems(response.data);
         onCancel();
-
       }
 
       return response.data;
@@ -77,7 +74,7 @@ export const postInsertInfoLog = createAsyncThunk(
       // @ts-ignore
       return thunkAPI.rejectWithValue({ error: error.message });
     }
-  }
+  },
 );
 
 export const putOtherStatus = createAsyncThunk(
@@ -99,7 +96,7 @@ export const putOtherStatus = createAsyncThunk(
       // @ts-ignore
       return thunkAPI.rejectWithValue({ error: error.message });
     }
-  }
+  },
 );
 
 export const putCertify = createAsyncThunk(
@@ -110,7 +107,6 @@ export const putCertify = createAsyncThunk(
     try {
       const response = await api.put(url, restObj);
 
-      console.log(`response`, response);
       // Return the data from the response
       // @ts-ignore
       if (response.message === "OK") {
@@ -123,78 +119,72 @@ export const putCertify = createAsyncThunk(
       // @ts-ignore
       return thunkAPI.rejectWithValue({ error: error.message });
     }
-  }
+  },
 );
 
 export const putLogForm = createAsyncThunk(
   "logs/putLogForm",
   async (data: any, thunkAPI) => {
     const { onCancel, _id, ...restObj } = data;
-    const url = `/mainInfo?_id=${_id}`
+    const url = `/mainInfo?_id=${_id}`;
     try {
-      const response = await api.put(url, restObj)
+      const response = await api.put(url, restObj);
       // Return the data from the response
-  
+
       // @ts-ignore
       if (response.message === "OK") {
-        // close modal 
-        message.success("Success")
-        onCancel()
-        
-      }else{
-        message.error("Error")
+        // close modal
+        message.success("Success");
+        onCancel();
+      } else {
+        message.error("Error");
       }
-      
-      
-      return response
+
+      return response;
     } catch (error) {
-      
       // @ts-ignore
-      return thunkAPI.rejectWithValue({ error: error.message })
+      return thunkAPI.rejectWithValue({ error: error.message });
     }
-  }
-)
+  },
+);
 
 export const certifyDeleteTableItem = createAsyncThunk(
   "logs/certifyDeleteTableItem",
   async (id: string, thunkAPI) => {
-    
-    const url = `/certify/${id}`
+    const url = `/certify/${id}`;
     try {
-      const response = await api.delete(url)
+      const response = await api.delete(url);
       //@ts-ignore
       if (response.message === "OK") {
-        message.success("deleted!")
+        message.success("deleted!");
       }
 
-      return response
+      return response;
     } catch {
       // @ts-ignore
-      return thunkAPI.rejectWithValue({ error: error.message })
+      return thunkAPI.rejectWithValue({ error: error.message });
     }
-  }
-)
+  },
+);
 
 export const deleteTableItem = createAsyncThunk(
   "logs/deleteTableItem",
   async (id: string, thunkAPI) => {
-    const url = `/interlog/delete/${id}`
+    const url = `/interlog/delete/${id}`;
     try {
-      const response = await api.delete(url)
-      console.log("response", response)
+      const response = await api.delete(url);
       //@ts-ignore
       if (response.message === "OK") {
-        message.success("deleted!")
+        message.success("deleted!");
       }
 
-      return response
+      return response;
     } catch {
       // @ts-ignore
-      return thunkAPI.rejectWithValue({ error: error.message })
+      return thunkAPI.rejectWithValue({ error: error.message });
     }
-  }
-)
-
+  },
+);
 
 export const getItems = createAsyncThunk(
   "drivers/getItems",
@@ -207,9 +197,9 @@ export const getItems = createAsyncThunk(
       // @ts-ignore
       return thunkAPI.rejectWithValue({ error: error.message });
     }
-  }
+  },
 );
- 
+
 const LogSlice = createSlice({
   name: "log",
   initialState: initialState,
@@ -219,7 +209,7 @@ const LogSlice = createSlice({
     },
     setCompanyTimeZone: (
       state: State,
-      action: { type: string; payload: string }
+      action: { type: string; payload: string },
     ) => {
       state.companyTimeZone = action.payload || "Eastern Time";
     },
@@ -239,14 +229,12 @@ const LogSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getItems.fulfilled, (state, action) => {
-        // console.log(`action.payload`, action.payload);
         state.status = "succeeded";
         state.logForm = action.payload;
-      })
+      });
   },
 });
 
-//setCompanyTimeZone
 export const { setCompanyTimeZone } = LogSlice.actions;
 
 export default LogSlice;

@@ -50,8 +50,6 @@ const LogsInner: React.FC = () => {
   const s = useSelector<RootState>((s) => s.log);
   const dispatch = useDispatch<AppDispatch>();
 
-// console.log(logs);
-
   const handleCheckbox1Change = (e: CheckboxChangeEvent) => {
     setCheckbox1(e.target.checked);
     setCheckbox1Active(e.target.checked);
@@ -79,8 +77,6 @@ const LogsInner: React.FC = () => {
       dispatch(setCompanyTimeZone(driverData?.data?.companyTimeZone));
     }
   }, []);
-
-  // console.log(`driverData?.data`, driverData?.data?.companyTimeZone); //companyTimeZone
 
   return (
     <MainLayout>
@@ -122,7 +118,7 @@ const LogsInner: React.FC = () => {
         </div>
         <br />
         {logData?.violation?.map((violation) => (
-          <Badge count={violation.violation} key={violation._id}/>
+          <Badge count={violation.violation} key={violation._id} />
         ))}
         <LogGraph
           data={filterDrawStatus(logs)}

@@ -14,7 +14,7 @@ export const fixLogsStatus = (logs: ILog[]): ILog[] => {
       } else return true;
     })
     .filter((log) =>
-      log.start === log.end && log.duration === 0 ? false : true
+      log.start === log.end && log.duration === 0 ? false : true,
     )
     .filter((log, i, array) => {
       const prevLog = array[i - 1];
@@ -62,7 +62,7 @@ export const insertInfoLog = (logs: ILog[], infoLog: ILog): ILog[] => {
 export const correctLogsTime = (
   logs: ILog[],
   currLog: ILog,
-  val: any
+  val: any,
 ): ILog[] => {
   const intermediateLogs: ILog[] = [];
   let newLogs = logs
@@ -143,7 +143,7 @@ export const correctLogsTime = (
 export const addNewLog = (
   logs: ILog[],
   newLogInitial: ILog,
-  rangeVal: any
+  rangeVal: any,
 ): ILog[] => {
   let _newLogs = logs.filter((log) => log._id !== newLogInitial._id);
   const intermediateLogs: ILog[] = [];
@@ -184,20 +184,21 @@ export const addNewLog = (
     });
 
     return sortLogsByTime(
-      addIntermediateLogs([..._newLogs, ...intermediateLogs])
+      addIntermediateLogs([..._newLogs, ...intermediateLogs]),
     );
   }
   _newLogs[prevLog.index].end = newLog.start;
   _newLogs[nextLog.index].start = newLog.end;
   _newLogs = _newLogs.filter((log) =>
-    log.start > newLog.start && log.start < newLog.end ? false : true
+    log.start > newLog.start && log.start < newLog.end ? false : true,
   );
   return sortLogsByTime([..._newLogs, ...intermediateLogs]);
 };
 export const sortLogsByTime = (logs: ILog[]): ILog[] =>
   logs
     .sort(
-      (a, b) => /* POINT_STATUSES.includes(a.status) ? -1 : */ a.start - b.start
+      (a, b) =>
+        /* POINT_STATUSES.includes(a.status) ? -1 : */ a.start - b.start,
     )
     .map((log, index) => {
       return { ...log, index: index };
@@ -206,7 +207,7 @@ export const mapDataBeforeSend = (
   logs: ILog[],
   croppedTime?: [number, number],
   doCrop: boolean = true,
-  driver?: IDriverData
+  driver?: IDriverData,
 ): any => {
   const sendData = [
     ...logs
@@ -229,7 +230,7 @@ export const getNewLog = (
   logs: any,
   initialTime: any,
   val: any,
-  fetchLogParams: any
+  fetchLogParams: any,
 ): ILog => {
   const _ID = uuidV4();
   // debugger
@@ -262,7 +263,7 @@ export const getNewLog = (
 };
 export const cropOneDayLogs = (
   logs: ILog[],
-  initialTime: number
+  initialTime: number,
 ): { croppedLogs: ILog[]; croppedTime: [number, number] } => {
   if (logs.length) {
     const intermediateLogs: ILog[] = [];
@@ -273,7 +274,6 @@ export const cropOneDayLogs = (
       } else return true;
     });
     if (croppedLogs.length === 0) {
-      // console.log(`croppedLogs`, croppedLogs);
       // croppedLogs[0].start = initialTime;
       // croppedLogs[0].isCropped = true;
       // croppedLogs[0].cropPoint = "start";

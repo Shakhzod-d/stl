@@ -29,23 +29,23 @@ interface Props {
   id: string | null;
 }
 
-interface IRole{
-  role: string,
-  _id: string
+interface IRole {
+  role: string;
+  _id: string;
 }
-interface IRoleName{
-    name: string;
-    value: string;
-    forService: boolean;
-    forCompany: boolean;
+interface IRoleName {
+  name: string;
+  value: string;
+  forService: boolean;
+  forCompany: boolean;
 }
 
 const ActionModal: React.FC<Props> = ({ toggle, id, onSuccess }) => {
   const { userData } = useSelector((state: RootState) => state.auth);
-  const [roleList, setRolList] = useState<IRole[] | undefined>()
-  const [ roleId, setRoldId] = useState<string>('')
-  const [ roleName, setRolName] = useState<IRoleName[] | undefined>()
-  const [ newAllServices, setNewAllServices] = useState<any | undefined>()
+  const [roleList, setRolList] = useState<IRole[] | undefined>();
+  const [roleId, setRoldId] = useState<string>("");
+  const [roleName, setRolName] = useState<IRoleName[] | undefined>();
+  const [newAllServices, setNewAllServices] = useState<any | undefined>();
   const { handleSubmit, control, reset, watch, getValues } =
     useForm<IUserForm>(formProps);
 
@@ -53,61 +53,80 @@ const ActionModal: React.FC<Props> = ({ toggle, id, onSuccess }) => {
   const { data, isLoading } = useApi(
     `/user/${id}`,
     {},
-    { enabled: Boolean(id) }
+    { enabled: Boolean(id) },
   );
-  
 
-  useEffect(()=>{
-    const res = api('role/getAll')
-    res.then((res) => 
-      setRolList(res.data.filter((item: any)=>{
-        if(item?.role === getValues('role')?.roleName){
-          return item
-        }
-      }))
-    ).catch((error)=>console.log(error)
-    )
-    
-    
-  }, [getValues('role')?.roleName])
+  useEffect(() => {
+    const res = api("role/getAll");
+    res
+      .then((res) =>
+        setRolList(
+          res.data.filter((item: any) => {
+            if (item?.role === getValues("role")?.roleName) {
+              return item;
+            }
+          }),
+        ),
+      )
+      .catch((error) => console.error(error));
+  }, [getValues("role")?.roleName]);
 
-  useEffect(()=>{
-    roleList?.filter((item: any)=>{
-      setRoldId(item._id)
-    })
-  }, [roleList])
-  
-  
-  
-  
+  useEffect(() => {
+    roleList?.filter((item: any) => {
+      setRoldId(item._id);
+    });
+  }, [roleList]);
+
   // get Services
   const { data: servicesData, isLoading: servicesLoad } = useApi(
     "/main",
-    select_paging
+    select_paging,
   );
 
-  useEffect(()=>{
-    if(userData?.role.roleName === RoleNames.SERVICE_ADMIN){
-      setRolName(role_names?.filter((item: IRoleName)=>item.value !== RoleNames.SUPER_ADMIN && item.value !== RoleNames.SERVICE_ADMIN))
-    }else if(userData?.role.roleName === RoleNames.SECOND_SERVICE_ADMIN){
-      setRolName(role_names?.filter((item: IRoleName)=>item.value !== RoleNames.SUPER_ADMIN && item.value !== RoleNames.SERVICE_ADMIN && item.value !==RoleNames.SECOND_SERVICE_ADMIN))
+  useEffect(() => {
+    if (userData?.role.roleName === RoleNames.SERVICE_ADMIN) {
+      setRolName(
+        role_names?.filter(
+          (item: IRoleName) =>
+            item.value !== RoleNames.SUPER_ADMIN &&
+            item.value !== RoleNames.SERVICE_ADMIN,
+        ),
+      );
+    } else if (userData?.role.roleName === RoleNames.SECOND_SERVICE_ADMIN) {
+      setRolName(
+        role_names?.filter(
+          (item: IRoleName) =>
+            item.value !== RoleNames.SUPER_ADMIN &&
+            item.value !== RoleNames.SERVICE_ADMIN &&
+            item.value !== RoleNames.SECOND_SERVICE_ADMIN,
+        ),
+      );
+    } else {
+      setRolName(role_names);
     }
-    else{
-      setRolName(role_names)
+  }, [servicesData]);
+  useEffect(() => {
+    if (
+      userData?.role.roleName === RoleNames.SERVICE_ADMIN ||
+      userData?.role.roleName === RoleNames.SECOND_SERVICE_ADMIN
+    ) {
+      setNewAllServices({
+        ...servicesData,
+        data: {
+          data: servicesData?.data.data.filter(
+            (item: any) => item._id === userData?.serviceId,
+          ),
+        },
+      });
+    } else {
+      setNewAllServices(servicesData);
     }
-}, [servicesData])
-useEffect(()=>{
-  if(userData?.role.roleName === RoleNames.SERVICE_ADMIN || userData?.role.roleName === RoleNames.SECOND_SERVICE_ADMIN){
-    setNewAllServices({...servicesData, data: {data: servicesData?.data.data.filter((item: any)=>item._id === userData?.serviceId)}})
-  }else{
-    setNewAllServices(servicesData)
-  }
-}, [servicesData])
+  }, [servicesData]);
 
   const { data: companiesData, isLoading: companiesLoad } = useApi(
     `/main/${getValues("serviceId")}`,
     select_paging,
-    { enabled: Boolean(watch("serviceId")) }
+    { enabled: Boolean(watch("serviceId")) },
   );
 
   //action mutations
@@ -115,16 +134,15 @@ useEffect(()=>{
     useApiMutation("/user");
   const { mutate: updateMutate, isLoading: updateLoading } = useApiMutationID(
     "PUT",
-    "/user"
+    "/user",
   );
 
   // parse data
   const { tableData: services } = useParseData(newAllServices);
-  
 
   useEffect(() => {
     const item: IUserForm = data?.data;
-    
+
     if (item)
       reset({
         firstName: item.firstName,
@@ -134,17 +152,15 @@ useEffect(()=>{
         password: item.password,
         role: {
           roleName: item.role.roleName,
-          roleId: roleId
+          roleId: roleId,
         },
         serviceId: item.serviceId,
         companyId: item.companyId,
       });
   }, [data]);
 
-
-
   const isServiceRequired = useMemo(() => {
-    const role = watch('role.roleName')
+    const role = watch("role.roleName");
     return role && role !== "superAdmin";
   }, [watch("role.roleName")]);
 
@@ -156,8 +172,8 @@ useEffect(()=>{
   const submitFunc = (data: IUserForm) => {
     if (!isServiceRequired) data.serviceId = null;
     if (!isCompanyRequired) data.companyId = null;
-    data = {...data, role: {...data.role, roleId: roleId}}
-    if (id) updateMutate( {id, data} , { onSuccess });
+    data = { ...data, role: { ...data.role, roleId: roleId } };
+    if (id) updateMutate({ id, data }, { onSuccess });
     else createMutate(data, { onSuccess });
   };
 
