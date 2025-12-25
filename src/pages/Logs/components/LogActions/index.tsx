@@ -110,7 +110,9 @@ const LogActions: React.FC<ILogActions> = ({}) => {
   };
 
   useEffect(() => {
-    const response = api(`daily/report?driverId=${params.id}&date=${upDate}`);
+    const response = api(
+      `admin/daily/report?driverId=${params.id}&date=${upDate}`,
+    );
     response
       .then((res) => {
         handleSetData(res?.data);

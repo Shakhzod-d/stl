@@ -22,7 +22,7 @@ const initialState: State = {
   logForm: null,
 };
 
-const apiUrl = "/logs/transfer";
+const apiUrl = "/admin/logs/transfer";
 
 export const updateLogsTransfer = createAsyncThunk(
   "logs/updateTransfer",
@@ -59,7 +59,7 @@ export const postInsertInfoLog = createAsyncThunk(
   "logs/postInsertInfoLog",
   async (data: any, thunkAPI) => {
     const { onCancel, handleLogItems, ...restObj } = data;
-    const url = `/interlog`;
+    const url = `/admin/interlog`;
     try {
       const response = await api.post(url, restObj);
 
@@ -81,7 +81,7 @@ export const putOtherStatus = createAsyncThunk(
   "logs/putOtherStatus",
   async (data: any, thunkAPI) => {
     const { onCancel, ...restObj } = data;
-    const url = `/interlog`;
+    const url = `/admin/interlog`;
     try {
       const response = await api.put(url, restObj);
 
@@ -170,7 +170,7 @@ export const certifyDeleteTableItem = createAsyncThunk(
 export const deleteTableItem = createAsyncThunk(
   "logs/deleteTableItem",
   async (id: string, thunkAPI) => {
-    const url = `/interlog/delete/${id}`;
+    const url = `/admin/interlog/delete/${id}`;
     try {
       const response = await api.delete(url);
       //@ts-ignore

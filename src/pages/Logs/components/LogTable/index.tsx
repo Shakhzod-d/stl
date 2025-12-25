@@ -29,7 +29,7 @@ const LogTable: React.FC<ILogTable> = ({
     logs: {
       _id: string;
     }[];
-  }>("logs/switch");
+  }>("admin/logs/switch");
 
   const { data: drivers, isLoading: driverLoad } = useApi<{
     data: IDriverData[];

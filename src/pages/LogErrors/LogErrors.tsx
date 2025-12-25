@@ -27,7 +27,7 @@ const LogErrors: React.FC = () => {
 
   const [time, setTime] = useQueryParam(
     "time",
-    withDefault(NumberParam, momentZone().startOf("day").valueOf())
+    withDefault(NumberParam, momentZone().startOf("day").valueOf()),
   );
   const [driver, setDriver] = useQueryParam("driver");
   const onDateChange = (value: Moment) => {
@@ -45,15 +45,18 @@ const LogErrors: React.FC = () => {
     {
       date: time / 1000,
       driverId: driver,
-    }
+    },
   );
-  const { data: DriversData } = useApi<IPageData<ILogsByDriver[]>>("drivers", {
-    page: 1,
-    limit: 200,
-  });
+  const { data: DriversData } = useApi<IPageData<ILogsByDriver[]>>(
+    "admin/drivers",
+    {
+      page: 1,
+      limit: 200,
+    },
+  );
 
   const dataViolations = data?.data?.map(
-    (violation) => violation.Violations.violation
+    (violation) => violation.Violations.violation,
   );
 
   return (
@@ -79,7 +82,7 @@ const LogErrors: React.FC = () => {
             />
             <Select
               data={Violations.filter((option) =>
-                dataViolations?.includes(option._id as TViolation)
+                dataViolations?.includes(option._id as TViolation),
               )}
               value={violation}
               setValue={setViolation}
@@ -96,7 +99,7 @@ const LogErrors: React.FC = () => {
             className="pointer"
             columns={columns}
             dataSource={data?.data?.filter((item) =>
-              violation ? item.Violations.violation === violation : true
+              violation ? item.Violations.violation === violation : true,
             )}
             loading={isFetching || isLoading}
             pagination={false}
