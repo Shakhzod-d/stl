@@ -35,7 +35,7 @@ const Login: React.FC = () => {
 
         const isAdmin = role.roleName === "superAdmin";
         const isService = ["serviceAdmin", "secondServiceAdmin"].includes(
-          role.roleName
+          role.roleName,
         );
         const isCompany = ["companyAdmin"].includes(role.roleName);
         const isLogger = ["logger"].includes(role.roleName);
@@ -62,7 +62,6 @@ const Login: React.FC = () => {
           historyReplace("/admin/all-companies");
           window.location.reload();
         }
-        console.log("user", data);
       },
       onError: (err) => {
         errorMessage(err?.data.error);

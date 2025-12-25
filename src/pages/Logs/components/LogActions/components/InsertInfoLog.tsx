@@ -94,15 +94,14 @@ const InsertInfoLog: FC<IInsertInfoLog> = ({
   onCancel,
 }) => {
   const companyTimeZone: any = useSelector<RootState>(
-    (s) => s.log.companyTimeZone
+    (s) => s.log.companyTimeZone,
   );
-  // console.log(`driverData`, driverData);
   const [currentTime, setCurrentTime] = useState<Moment | null>(
     !!formData
       ? moment // @ts-ignore
           .unix(formData?.start) // @ts-ignore
           .tz(timeZones[companyTimeZone]) // @ts-ignore
-      : moment().tz(timeZones[companyTimeZone])
+      : moment().tz(timeZones[companyTimeZone]),
   );
 
   const { control, handleSubmit, setValue, getValues, reset, watch } =
@@ -113,7 +112,7 @@ const InsertInfoLog: FC<IInsertInfoLog> = ({
           moment // @ts-ignore
             .unix(formData?.start) // @ts-ignore
             .tz(timeZones[companyTimeZone])
-            .format("h:mm:ss A")
+            .format("h:mm:ss A"),
         ),
       },
     });
@@ -130,22 +129,25 @@ const InsertInfoLog: FC<IInsertInfoLog> = ({
       end: currentTime !== null ? currentTime.unix() : moment().valueOf(),
       time: currentTime !== null ? currentTime.unix() : moment().valueOf(),
     };
-    
+
     const otherStatuses = {
       ...formData,
       // @ts-ignore
       onCancel,
       status,
-      start: currentTime !== null ? currentTime.unix() : moment(currentTime).valueOf(),
+      start:
+        currentTime !== null
+          ? currentTime.unix()
+          : moment(currentTime).valueOf(),
       end: currentTime !== null ? currentTime.unix() : moment().valueOf(),
-      time: currentTime !== null ? currentTime.unix() : moment().valueOf() / 1000,
-    }; 
-    // console.log(`certifyObj`, certifyObj); // onCancel
+      time:
+        currentTime !== null ? currentTime.unix() : moment().valueOf() / 1000,
+    };
 
     // @ts-ignore
     onInsert(status === "certify" ? certifyObj : otherStatuses, status);
   };
-  
+
   const formNames = insertInfoLogFormData;
 
   useEffect(() => {
@@ -160,7 +162,7 @@ const InsertInfoLog: FC<IInsertInfoLog> = ({
         [formNames.truck]: formData?.vehicleUnit || "",
         [formNames.time]: moment(
           moment(formData?.start * 1000).format("h:mm:ss"),
-          "h:mm:ss"
+          "h:mm:ss",
         ),
         // [formNames.signature]: defaultFormData?.,
       });
@@ -169,7 +171,6 @@ const InsertInfoLog: FC<IInsertInfoLog> = ({
   }, []);
 
   const handleChangeTime = (value: moment.Moment | null) => {
-    console.log(getValues());
     // useFormGraphColumns
     setValue("time", value);
   };
@@ -191,7 +192,7 @@ const InsertInfoLog: FC<IInsertInfoLog> = ({
         name="time"
         control={control}
         onChangeCustom={(
-          value //@ts-ignore
+          value, //@ts-ignore
         ) => setCurrentTime(value.tz(timeZones[companyTimeZone]))}
       />
       <br />

@@ -55,11 +55,11 @@ const LogActions: React.FC<ILogActions> = ({}) => {
       onInsertInfoLog,
       onInsertDutyStatus,
       setIsVisibleInsertInfoLog,
-      setLogs
+      setLogs,
     },
   } = useLogsInnerContext();
   const momentZone = useMomentZone();
-  
+
   const [isVisibleHistoryLog, setIsVisibleHistoryLog] = useState(false);
   const [isVisibleOriginalLogs, setIsVisibleOriginalLogs] = useState(false);
   const [isVisibleReport, setIsVisibleReport] = useState(false);
@@ -98,7 +98,7 @@ const LogActions: React.FC<ILogActions> = ({}) => {
     };
   };
 
-  const [renderReport, setRenderReport] = useState<boolean>(false)
+  const [renderReport, setRenderReport] = useState<boolean>(false);
   const [data, setReportData] = useState<any>();
   const params: { id: "" } = useParams();
   const location = useLocation();
@@ -106,20 +106,22 @@ const LogActions: React.FC<ILogActions> = ({}) => {
 
   const handleSetData = (res: any) => {
     setReportData(res?.report);
-    setLogs(res?.logs)
+    setLogs(res?.logs);
   };
 
   useEffect(() => {
     const response = api(`daily/report?driverId=${params.id}&date=${upDate}`);
     response
-      .then((res) => {handleSetData(res?.data)})
-      .catch((error) => console.log(error));
-  }, [renderReport])
+      .then((res) => {
+        handleSetData(res?.data);
+      })
+      .catch((error) => console.error(error));
+  }, [renderReport]);
 
   const upDateReport = () => {
-    setIsVisibleReport(true)
-    setRenderReport(!renderReport)
-  }
+    setIsVisibleReport(true);
+    setRenderReport(!renderReport);
+  };
 
   return (
     <div className="log-actions">
@@ -149,7 +151,7 @@ const LogActions: React.FC<ILogActions> = ({}) => {
                 historyPush(
                   `/main/trackings/inner/${
                     driverData?.data?._id
-                  }?time=${momentZone(initialTime).unix()}` // there is to be added ID
+                  }?time=${momentZone(initialTime).unix()}`, // there is to be added ID
                 )
               }
             >
@@ -213,7 +215,7 @@ const LogActions: React.FC<ILogActions> = ({}) => {
               Insert Duty Status
             </Button>
             {["off", "off_pc", "sb", "on", "on_ym"].includes(
-              currentLog.status
+              currentLog.status,
             ) &&
               !currentLog.isNewLog &&
               driverData?.data?.currentStatus !== "dr" && (

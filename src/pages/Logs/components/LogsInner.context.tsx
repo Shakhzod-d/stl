@@ -38,20 +38,19 @@ const useLogsInner = () => {
   const { id } = useParams<{ id: string }>();
   const [time, setTime] = useQueryParam(
     "time",
-    withDefault(NumberParam, moment().valueOf())
+    withDefault(NumberParam, moment().valueOf()),
   );
 
   const { data, refetch, isFetching } = useApi<ILogData>(
     "/logs",
     { date: time / 1000, driverId: id },
-    { suspense: true }
+    { suspense: true },
   );
 
-  
   const { data: driverData } = useApi<IDriverData>(
-    `driver/${id}`,
+    `admin/driver/${id}`,
     {},
-    { suspense: true }
+    { suspense: true },
   );
 
   const { mutate, status: transferStatus } = useApiMutation<ILogData>("logs");
@@ -87,14 +86,10 @@ const useLogsInner = () => {
   const s = useLocation();
 
   // inputString.replace(/(inner\/).*$/, '$1') /\/([^/]+)$/.exec(inputString)?.[1]
-  // console.log(`currentLog`, currentLog);
-  // console.log(/\/([^/]+)$/.exec(s?.pathname)?.[1]);
 
   const handleEditClick = (log: any) => {
     const rowIndex = logs.findIndex((item) => item._id === log._id);
     // setCurrentLog(log);
-    // console.log(`currentLog`, logs, log);
-    // @ts-ignore
 
     const newData = [...logs];
     newData.splice(rowIndex + 1, 0, log);
@@ -118,10 +113,9 @@ const useLogsInner = () => {
     }
   }, [data]);
 
-
   let totalTime = useMemo(() => {
     const rangeLogs = logs.filter(
-      (log) => !POINT_STATUSES.includes(log.status)
+      (log) => !POINT_STATUSES.includes(log.status),
     );
     return rangeLogs[rangeLogs.length - 1]?.end;
   }, [logs]);
@@ -138,7 +132,7 @@ const useLogsInner = () => {
           end: el.end <= endDay ? el.end : endDay,
         };
       });
-      setInitialLogs(data); 
+      setInitialLogs(data);
       setLogs(data);
     }
   }, [logData]);
@@ -146,7 +140,7 @@ const useLogsInner = () => {
   useEffect(() => {
     if (currentLog) {
       setIsLogsEdited(false);
-      setLog(currentLog)
+      setLog(currentLog);
     } else if (!currentLog) {
     }
   }, [currentLog]);
@@ -162,7 +156,7 @@ const useLogsInner = () => {
     setCurrentLog,
     onInsertInfoLogWithFormData,
     logs,
-    setLogs
+    setLogs,
   );
 
   const filterDrawStatus = (data: ILog[]) => {
@@ -172,7 +166,6 @@ const useLogsInner = () => {
   const afterRangeChange = (val: any, currLog: ILogData) => {
     setRangeVal(val);
   };
-
 
   const onCancel = () => {
     setLogs(initialLogs);
@@ -194,12 +187,12 @@ const useLogsInner = () => {
                   status: val,
                 }
               : { ...item };
-          })
+          }),
         );
       setCurrentLog(
-        (prev) => newLogs?.find((log) => prev?._id === log._id) || null
+        (prev) => newLogs?.find((log) => prev?._id === log._id) || null,
       );
-      
+
       setLogs(newLogs);
     } else if (currentLog?.isNewLog) {
       setCurrentLog((prev) => ({
@@ -246,25 +239,23 @@ const useLogsInner = () => {
         name: "",
       },
       origin: "Auto",
-      handleLogItems
-    }; 
+      handleLogItems,
+    };
 
     if (status === "certify") {
       dispatch(putCertify(infoLog));
     } else {
       dispatch(postInsertInfoLog(newLogObj));
     }
-    
   };
 
   const handleLogItems = (data: any) => {
     setLogs(sortLogsByTime([...logs, data]));
-  }
+  };
 
   const onNormalize = () => {};
 
   const onTransfer = (duration: number, log: ILog) => {
-
     mutate({
       ...log,
       // duration: duration - time,
@@ -296,11 +287,10 @@ const useLogsInner = () => {
             initialLogs,
             [0, 0],
             false,
-            driverData!.data
+            driverData!.data,
           ),
         },
       };
-      console.log("🔥payload: ", payload);
       setDisableActions(false);
       editLogsMutation(payload);
     } else {
@@ -309,20 +299,6 @@ const useLogsInner = () => {
       });
     }
   };
-  // console.log(
-  //   rangeVal,
-  //   hoveredId,
-  //   isFetching,
-  //   transferStatus,
-  //   editLogsLoading,
-  //   infoLogFormData,
-  //   log,
-  //   // columns,
-  //   logData,
-  //   logs,
-  //   time,
-  //   driverData
-  // );
 
   const onOk = () => {
     setIsLogsEdited(true);
@@ -338,7 +314,7 @@ const useLogsInner = () => {
             // @ts-ignore
             rangeVal: undefined,
           },
-          rangeVal
+          rangeVal,
         );
         const fixedStatusLogs = fixLogsStatus(res);
         setLogs(fixedStatusLogs);
@@ -347,7 +323,7 @@ const useLogsInner = () => {
           logs,
           // @ts-ignore
           currentLog,
-          rangeVal
+          rangeVal,
         );
         const fixedStatusLogs = fixLogsStatus(timeCorrectedLogs);
         setLogs(fixedStatusLogs);
@@ -366,7 +342,7 @@ const useLogsInner = () => {
     // debugger;
     const newLog: ILog = getNewLog(logs, time, val, fetchLogParams);
     setRangeVal(val);
-    
+
     setLogs([...logs, newLog]);
     setCurrentLog(newLog);
   };

@@ -20,13 +20,11 @@ interface Props {
 
 const ActionModal: React.FC<Props> = ({ toggle, id, onSuccess }) => {
   const { handleSubmit, control, reset } = useForm<IServiceForm>(formProps);
-  // console.log(id);
 
-  // get one service to update
   const { data, isLoading } = useApi(
     `/services/${id}`,
     {},
-    { enabled: Boolean(id) }
+    { enabled: Boolean(id) },
   );
 
   //action mutations
@@ -35,7 +33,7 @@ const ActionModal: React.FC<Props> = ({ toggle, id, onSuccess }) => {
 
   const { mutate: updateMutate, isLoading: updateLoading } = useApiMutationID(
     "PUT",
-    "service"
+    "service",
   );
 
   useEffect(() => {

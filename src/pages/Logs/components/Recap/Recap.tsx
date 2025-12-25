@@ -31,9 +31,8 @@ const data2 = {
 };
 
 const CustomTableToShowRecup = ({ data = data2 }: any) => {
-  // console.log(data);
   return (
-    <table style={{ width: "100%", borderCollapse: "collapse"}}>
+    <table style={{ width: "100%", borderCollapse: "collapse" }}>
       <tbody>
         {[...data?.recup]?.reverse()?.map((item: any, idx: number) => (
           <tr key={idx}>
@@ -73,7 +72,7 @@ const CustomTableToShowRecup = ({ data = data2 }: any) => {
           >
             <b>
               {formatTime(
-                moment.utc(data?.HoursWorkedToday * 1000).format("H: m")
+                moment.utc(data?.HoursWorkedToday * 1000).format("H: m"),
               )}
             </b>
           </td>
@@ -88,7 +87,7 @@ const CustomTableToShowRecup = ({ data = data2 }: any) => {
           >
             <b>
               {formatTime(
-                moment.utc(data?.HourAvailableToday * 1000).format("H: m")
+                moment.utc(data?.HourAvailableToday * 1000).format("H: m"),
               )}
             </b>
           </td>
@@ -103,7 +102,7 @@ const CustomTableToShowRecup = ({ data = data2 }: any) => {
           >
             <b>
               {formatTime(
-                moment.utc(data?.HoursAvailableTomarrow * 1000).format("H: m")
+                moment.utc(data?.HoursAvailableTomarrow * 1000).format("H: m"),
               )}
             </b>
           </td>

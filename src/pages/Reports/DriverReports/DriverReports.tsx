@@ -33,62 +33,61 @@ const DriverReports = () => {
     momentZone().startOf("day"),
     momentZone().startOf("day"),
   ]);
-  
+
   const [queryParams, setQueryParams] = useState<IQueryParams>();
   const [driverReport, setDriverReport] = useState<IDriverReportPDF[]>([]);
   const pdfExportComponent = useRef(null) as React.MutableRefObject<null>;
 
-  const { isFetching } = useApi<IDriverReport[]>(`driver/report`, queryParams, {
-    enabled:
-      !!queryParams?.driverId && !!queryParams?.from && !!queryParams?.to,
-    suspense: true,
-    onSuccess(data) {
-      const driverReportPdfs: IDriverReportPDF[] = data.data.map(
-        (driverReport) => {
-          if (driverReport?.log) {
-            const initialTime = driverReport?.log?.[0]?.start;
-            return {
-              log: mapDriverLogs(driverReport.log) || [],
-              data: driverReport.data,
-              initialTime: initialTime,
-            };
-          } else {
-            return {
-              log: false,
-              data: driverReport.data,
-              initialTime: 0,
-            };
-          }
-        }
-      );
-      setDriverReport(driverReportPdfs);
+  const { isFetching } = useApi<IDriverReport[]>(
+    `admin/driver/report`,
+    queryParams,
+    {
+      enabled:
+        !!queryParams?.driverId && !!queryParams?.from && !!queryParams?.to,
+      suspense: true,
+      onSuccess(data) {
+        const driverReportPdfs: IDriverReportPDF[] = data.data.map(
+          (driverReport) => {
+            if (driverReport?.log) {
+              const initialTime = driverReport?.log?.[0]?.start;
+              return {
+                log: mapDriverLogs(driverReport.log) || [],
+                data: driverReport.data,
+                initialTime: initialTime,
+              };
+            } else {
+              return {
+                log: false,
+                data: driverReport.data,
+                initialTime: 0,
+              };
+            }
+          },
+        );
+        setDriverReport(driverReportPdfs);
+      },
     },
-  });
-
+  );
 
   // Get all drivers data
   const { data: drivers } = useApi<{ data: IDriverData[] }>(
-    "drivers",
+    "admin/drivers",
     {
       page: 1,
       limit: 15,
     },
     {
       suspense: true,
-    }
+    },
   );
 
-  
-  
   useEffect(() => {
-
     setQueryParams((prev) => ({
       ...prev,
       driverId: selectedDriver,
       from: moment(date?.[0])?.unix(),
       to: moment(date?.[1])?.unix(),
     }));
-
   }, [date, selectedDriver]);
 
   const getReportFileName = () => {
@@ -103,8 +102,6 @@ const DriverReports = () => {
   const onRangePickerChange = (props: any) => {
     setDate([momentZone(props[0]), momentZone(props[1])]);
   };
-
-  
 
   return (
     <div className="drivers-reports page">

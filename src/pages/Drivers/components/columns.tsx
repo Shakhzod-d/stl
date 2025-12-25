@@ -9,7 +9,7 @@ import { IDriverData } from "@/types/driver.type";
 import { IVoid } from "@/types";
 
 const useColumns = (refetch: IVoid) => {
-  const { mutate } = useApiMutationID("DELETE", "/driver");
+  const { mutate } = useApiMutationID("DELETE", "/admin/driver");
   const handleDeleteDriver = (id: string) => {
     mutate({ id }, { onSuccess: () => refetch() });
   };

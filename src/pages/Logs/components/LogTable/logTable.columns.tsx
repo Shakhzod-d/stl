@@ -14,8 +14,10 @@ import { CopyOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { InterLogsStatus, timeZones } from "./helper";
-import { certifyDeleteTableItem, deleteTableItem } from "@/store/slices/logSlice";
-
+import {
+  certifyDeleteTableItem,
+  deleteTableItem,
+} from "@/store/slices/logSlice";
 
 type TFormConnection = {
   fromTo: any;
@@ -50,34 +52,35 @@ const useGraphColumns = (
   setCurrentLog: ISetState<ILog | null>,
   onInsertInfoLogWithFormData: (formData: ILog) => void,
   logs: ILog[],
-  setLogs: (data: ILog[]) => void
+  setLogs: (data: ILog[]) => void,
 ) => {
   const companyTimeZone = useSelector<RootState>((s) => s.log.companyTimeZone);
-  const dispatch = useDispatch<AppDispatch>()
-  
+  const dispatch = useDispatch<AppDispatch>();
+
   const editItem = (log: any) => {
     document
       ?.querySelector("#box")
       ?.scrollIntoView({ behavior: "smooth", block: "start" });
     setCurrentLog(log);
-    
   };
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
     message.success("Copied!");
   };
-  
+
   const handleUpdate = (data: any) => {
-    editItem(data)
-  }
+    editItem(data);
+  };
 
   const handleDelete = (id: string, status: string) => {
-    status === "certify" ? dispatch(certifyDeleteTableItem(id)) : dispatch(deleteTableItem(id)) 
+    status === "certify"
+      ? dispatch(certifyDeleteTableItem(id))
+      : dispatch(deleteTableItem(id));
 
-    let filterLog: any = logs.filter(item => item?._id !== id)
+    let filterLog: any = logs.filter((item) => item?._id !== id);
 
-    setLogs(filterLog)
+    setLogs(filterLog);
   };
 
   return [
@@ -101,7 +104,7 @@ const useGraphColumns = (
             {moment
               .unix(start) //@ts-ignore
               .tz(timeZones[companyTimeZone])
-              .format("h:mm:ss A")} 
+              .format("h:mm:ss A")}
           </span>
         );
       },
@@ -113,12 +116,14 @@ const useGraphColumns = (
         const start = moment.unix(record.start);
         const end = moment.unix(record.end);
         const seconds = moment.duration(end.diff(start)).asSeconds();
-      
-        const hour = Math.trunc(seconds / 3600) 
-        const min = Math.trunc((seconds % 3600) / 60)
-        const sec = seconds % 60
-        
-        return `${hour >= 10 ? hour : "0" + hour }:${min >= 10 ? min : "0" + min}:${sec >= 10 ? sec : "0" + sec}`;
+
+        const hour = Math.trunc(seconds / 3600);
+        const min = Math.trunc((seconds % 3600) / 60);
+        const sec = seconds % 60;
+
+        return `${hour >= 10 ? hour : "0" + hour}:${
+          min >= 10 ? min : "0" + min
+        }:${sec >= 10 ? sec : "0" + sec}`;
       },
     },
     {
@@ -152,7 +157,6 @@ const useGraphColumns = (
       title: "Odometer",
       dataIndex: "odometer",
       render: (value: any) => {
-        // console.log(`value`, value);
         return <span>{value === 0 ? "" : value}</span>;
       },
     },
@@ -181,39 +185,36 @@ const useGraphColumns = (
     {
       title: "action",
       // dataIndex: "_id",
-      render: (id: any, log: any) =>{
-        return(
-            <div className="action-table">
-              {
-                Object.values(InterLogsStatus).includes(log.status) ? (
-                  <>
-                    <div onClick={() => handleUpdate(log)}>
-                    <Icon icon="pencil" className="pencil" />
-                  </div>
-                    <div onClick={() => handleDelete(id?._id, log?.status)}>
-                    <Icon icon="close" className="close" />
-                  </div>
-                  </>
-                  ): <div onClick={() => handleUpdate(log)}>
+      render: (id: any, log: any) => {
+        return (
+          <div className="action-table">
+            {Object.values(InterLogsStatus).includes(log.status) ? (
+              <>
+                <div onClick={() => handleUpdate(log)}>
                   <Icon icon="pencil" className="pencil" />
                 </div>
-              }
-              
-            </div>
-        )
-      }
-        
+                <div onClick={() => handleDelete(id?._id, log?.status)}>
+                  <Icon icon="close" className="close" />
+                </div>
+              </>
+            ) : (
+              <div onClick={() => handleUpdate(log)}>
+                <Icon icon="pencil" className="pencil" />
+              </div>
+            )}
+          </div>
+        );
+      },
     },
   ];
 };
-
 
 const useFormGraphColumns = (): ColumnsType<ILog> => {
   const {
     actions: { setCurrentLog },
   } = useLogsInnerContext();
   const { control, formState } = useForm<TFormConnection>();
-  
+
   return [
     {
       title: "#",
