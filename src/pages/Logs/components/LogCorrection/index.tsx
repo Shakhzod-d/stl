@@ -107,22 +107,36 @@ const LogCorrection: React.FC<ILogCorrection> = ({ handleCloseEditing }) => {
 
   const submit = (formData: TFormConnection) => {
     handleCloseEditing();
+    let lat = 0;
+    let lng = 0;
+
+    if (typeof formData.lng === "string") {
+      const parts = formData?.lng?.split(",");
+      lat = Number(parts[0]);
+      lng = Number(parts[1]);
+    } else if (currentLog?.location) {
+      lat = currentLog.location.lat;
+      lng = currentLog.location.lng;
+    }
+
     setLogs((prevLogs: any) => {
-      return prevLogs.map((prevLog: any) =>
-        prevLog._id === currentLog?._id
+      return prevLogs.map((prevLog: any) => {
+        return prevLog._id === currentLog?._id
           ? {
               ...currentLog!,
               ...formData,
               location: {
                 name: currentLog?.location.name!,
-                lat: +formData.lng.split(",")[0],
-                lng: +formData.lng.split(",")[1],
+                lat: +lat,
+                lng: +lng,
+                // lat: +formData?.lng?.split(",")[0],
+                // lng: +formData?.lng?.split(",")[1],
               },
               odometer: +formData.odometer,
               engineHours: +formData.hours,
             }
-          : prevLog,
-      );
+          : prevLog;
+      });
       /* return fixLogsStatus(
                      correctLogsTime(
                           prev,
@@ -135,13 +149,24 @@ const LogCorrection: React.FC<ILogCorrection> = ({ handleCloseEditing }) => {
                 ); */
     });
 
+    if (typeof formData.lng === "string") {
+      const parts = formData?.lng?.split(",");
+      lat = Number(parts[0]);
+      lng = Number(parts[1]);
+    } else if (currentLog?.location) {
+      lat = currentLog.location.lat;
+      lng = currentLog.location.lng;
+    }
+
     const newItem = {
       ...currentLog!,
       ...formData,
       location: {
         name: currentLog?.location.name!,
-        lat: +formData.lng.split(",")[0],
-        lng: +formData.lng.split(",")[1],
+        lat: +lat,
+        lng: +lng,
+        // lat: +formData.lng.split(",")[0],
+        // lng: +formData.lng.split(",")[1],
       },
       // start: fromTo[0].unix(),
       // end: fromTo[1].unix(),

@@ -33,7 +33,7 @@ const LogsByDriver: React.FC = () => {
   const { data: LogsByDriverData, isLoading } = useApi<{
     data: any[];
   }>(
-    `/logs/bydriver`,
+    `/admin/logs/bydriver`,
     {
       driver,
       from: rangeDate?.[0].unix(),

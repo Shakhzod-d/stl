@@ -21,7 +21,7 @@ const MultiDayGraph = ({}: IMultiDayGraph) => {
   } = useLogsInnerContext();
   const { width: graphWidth, height: graphHeight, ref } = useResizeDetector();
   const { data, isSuccess } = useApi<IMultidayLogs[]>(
-    "/logs/range",
+    "/admin/logs/range",
     {
       from: momentZone().startOf("day").unix() - 60 * 60 * 24 * 10,
       to: momentZone().startOf("day").unix(),
